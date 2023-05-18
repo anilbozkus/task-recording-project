@@ -1,0 +1,60 @@
+.main-container {
+  width: 100%;
+  max-width: 1268px;
+  padding: 0 24px;
+  margin-top: 58px;
+  
+  .header-container {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+
+    .left-side {
+      display: flex;
+      align-items: center;
+
+      .datepicker {
+        width: 144px;
+        border: 1px solid #E5E5E5;
+        border-radius: 6px;
+        margin-left: 16px;
+
+        .MuiInputBase-root {
+          font-size: 14px;
+          height: 44px;
+        }
+
+        .MuiInputLabel-root {
+          font-size: 14px;
+          line-height: 1em;
+        }
+
+        .MuiOutlinedInput-notchedOutline {
+          border-color: #E5E5E5;
+        }
+
+
+        .MuiSvgIcon-root {
+          width: 0.8em;
+        }
+      }
+    }
+
+    .right-side {
+      display: flex;
+
+      .MuiOutlinedInput-notchedOutline {
+        border-color: #E5E5E5;
+      }
+
+      .MuiInputBase-root {
+        font-size: 14px;
+        height: 44px;
+      }
+
+      .MuiSvgIcon-root {
+        width: 0.8em;
+      }
+    }
+  }
+}

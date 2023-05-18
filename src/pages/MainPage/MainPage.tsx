@@ -1,22 +1,14 @@
-import React from 'react';
-import './MainPage.css';
+import './mainPage.scss';
+import Paper from '../../components/Paper/paper';
+import Header from '../../components/Header/header';
 
 function MainPage() {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="main-container">
+      <Paper>
+        <Header />
+      </Paper>
     </div>
   );
 }
