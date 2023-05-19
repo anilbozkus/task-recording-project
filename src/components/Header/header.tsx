@@ -1,30 +1,31 @@
 import Button from '../../components/Button/button';
 import SearchTextField from '../../components/SearchField/searchField';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import React from 'react';
+import 'react-datepicker/dist/react-datepicker.css'
+import DatePicker from "react-datepicker"
+import { useContext, useState } from 'react';
+import ModalComponent  from '../../components/Modal/modal';
+import './header.scss';
+import { AppContext } from '../../appContext';
 
 function Header() {
-    const [date, setDate] = React.useState(null);
-
-    const openModal = () => {
-        console.log('Modal opened!');
+    const { selectedDate, setSelectedDate } = useContext(AppContext);
+    const [openModal, setOpenModal] = useState(false);
+    
+    const handleDateChange = (date: Date | null) => {
+        setSelectedDate(date);
     };
 
     return (
 
         <div className="header-container">
+            <ModalComponent open={openModal} onClose={() => setOpenModal(false)}/>
             <div className="left-side">
-                <Button label='Report Your Daily Tasks' onClick={openModal} />
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                        label="Select Date"
-                        className='datepicker'
-                        value={date}
-                        onChange={(newValue) => setDate(newValue)}
-                    />
-                </LocalizationProvider>
+                <Button label='Report Your Daily Tasks' onClick={() => setOpenModal(true)} />
+                <DatePicker
+                    className='datepicker-container'
+                    selected={selectedDate}
+                    onChange={handleDateChange}
+                />
             </div>
             <div className="right-side">
                 <SearchTextField />

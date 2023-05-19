@@ -1,8 +1,9 @@
 .main-container {
   width: 100%;
-  max-width: 1268px;
+  max-width: 1292px;
   padding: 0 24px;
   margin-top: 58px;
+  margin-bottom: 26px;
   
   .header-container {
     padding: 20px;
@@ -55,6 +56,32 @@
       .MuiSvgIcon-root {
         width: 0.8em;
       }
+    }
+  }
+
+  .content-container {
+
+    .paper{
+      min-height: 75vh;
+    }
+
+    .content-title {
+      padding: 24px 16px;
+      font-weight: 590;
+      font-size: 14px;
+      line-height: 17px;
+    }
+
+    .backlog {
+      color: #ACADF9;
+    }
+
+    .in-progress {
+      color: #E26E46;
+    }
+
+    .done {
+      color: #56B969;
     }
   }
 }

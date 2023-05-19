@@ -1,0 +1,57 @@
+.box-container {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 75%;
+    max-width: 856px;
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 24px;
+    
+    .icon-container {
+        position: absolute;
+        right: 16px;
+        top: 16px;
+    }
+
+    .modal-title{
+        font-weight: 600;
+        font-size: 24px;
+        line-height: 29px;
+        color: #000000;
+        margin-top: 0;
+        margin-bottom: 8px;
+    }
+
+    .modal-description{
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 17px;
+        color: #000000;
+        margin-top: 12px;
+        margin-bottom: 20px;
+    }
+
+    .type-field{
+        width: 100%;
+
+        .MuiSelect-select{
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    .description-field{
+        width: 100%;
+    }
+
+    .MuiButton-root{
+        margin-top: 16px;
+        font-family: 'SF Pro';
+        padding: 14px 24px;
+        border-radius: 6px;
+        background: #3D69E7;
+    }
+}
