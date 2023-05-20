@@ -60,9 +60,29 @@
   }
 
   .content-container {
-
+    margin-top: 24px;
+    
     .paper{
-      min-height: 75vh;
+      min-height: 70vh;
+
+      .task-container{
+        padding: 0 16px;
+
+        .card-container { 
+          background-color: #FFFFFF;
+          border: 1px solid #E5E5E5;
+          border-radius: 12px;
+          padding: 12px 16px 16px;
+          box-shadow: 0px 0px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+          margin-bottom: 16px;     
+
+          .MuiCardContent-root{
+            padding: 0;
+          }
+        }
+
+      }
+
     }
 
     .content-title {
@@ -70,6 +90,7 @@
       font-weight: 590;
       font-size: 14px;
       line-height: 17px;
+      margin-bottom: 0;
     }
 
     .backlog {

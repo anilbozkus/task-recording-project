@@ -4,6 +4,7 @@ interface Task {
     task_type: string;
     content: string;
     date: Date | null;
+    column: string;
 }
 
 interface AppContextProps {

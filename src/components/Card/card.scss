@@ -1,0 +1,41 @@
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+.user-details {
+    display: flex;
+    flex-direction: column;
+
+    .user-title {
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 17px;
+    }
+
+    .user-bio {
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 14px;
+        color: #9EA9B2;
+    }
+
+}
+
+.task-content {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: #000000;
+    margin-top: 14px;
+}
+
+.tasktype-container{
+    margin-top: 14px;
+    .task-type {
+        display: flex;
+        align-items: center;
+    }
+}
