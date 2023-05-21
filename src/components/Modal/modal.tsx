@@ -64,6 +64,7 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ open, onClose, onDateCh
                 ...task,
                 task_type: matchingTask.task_type,
                 content: matchingTask.content,
+                column: matchingTask.column, // Keep the existing 'column' value
                 date: selectedDate,
               };
             }
@@ -106,10 +107,10 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ open, onClose, onDateCh
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     const validTasks = newTask.filter((task) => task.task_type || task.content);
     const validTasksLength = validTasks.length;
-
+  
     if (validTasksLength > 0) {
       setTasks((prevTasks) => {
         const updatedTasks = prevTasks.map((task, index) => {
@@ -119,32 +120,34 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ open, onClose, onDateCh
             task.date.toISOString().slice(0, -5) === selectedDate.toISOString().slice(0, -5)
           ) {
             const validTaskIndex = index % 3;
+            const matchingTask = validTasks[validTaskIndex];
             return {
               ...task,
-              task_type: validTasks[validTaskIndex]?.task_type || task.task_type,
-              content: validTasks[validTaskIndex]?.content || task.content,
+              task_type: matchingTask?.task_type || task.task_type,
+              content: matchingTask?.content || task.content,
+              column: matchingTask?.column || task.column, // Keep the existing 'column' value
             };
           }
           return task;
         });
-
+  
         const existingTasksLength = updatedTasks.filter(
           (task) =>
             task.date &&
             selectedDate &&
             task.date.toISOString().slice(0, -5) === selectedDate.toISOString().slice(0, -5)
         ).length;
-
+  
         if (validTasksLength > existingTasksLength) {
           const missingTasks = validTasks.slice(existingTasksLength);
-
+  
           return [...updatedTasks, ...missingTasks];
         }
-
+  
         return updatedTasks;
       });
     }
-
+  
     onClose();
   };
 

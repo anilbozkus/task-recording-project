@@ -4,7 +4,7 @@ import Header from '../../components/Header/header';
 import Grid from '@mui/material/Grid';
 import { Key, useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../appContext';
-import { DragDropContext } from 'react-beautiful-dnd';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import DndComponent from '../../components/dndComponent/dndComponent';
 import LoginFlow from '../../components/LoginFlow/loginFlow';
 
@@ -23,6 +23,17 @@ interface Task {
   date: Date | null;
   column: string;
 }
+
+interface Column {
+  id: string;
+  title: string;
+  tasks: Task[];
+}
+
+interface Columns {
+  [key: string]: Column;
+}
+
 
 function MainPage() {
   const { tasks, selectedDate } = useContext(AppContext);
@@ -52,35 +63,89 @@ function MainPage() {
     }
   };
 
-  const [columns, setColumns] = useState(initialColumns);
-
-  const handleDragEnd = (result: { source: any; destination: any }) => {
+  const [columns, setColumns] = useState<Columns>(initialColumns);
+  
+  const handleDragEnd = (result: DropResult) => {
+    // Make sure we have a valid destination
+    if (!result.destination) return;
+  
     const { source, destination } = result;
-
-    if (!destination) {
-      return;
-    }
-
+  
+    // Make sure we're actually moving the item
     if (
       source.droppableId === destination.droppableId &&
-      source.index === destination.index
+      destination.index === source.index
     ) {
       return;
     }
-
-    const updatedTasks = Array.from(filteredTasks);
-    const [movedTask] = updatedTasks.splice(source.index, 1);
-
-    if (source.droppableId === destination.droppableId) {
-      updatedTasks.splice(destination.index, 0, movedTask);
-    } else {
-      movedTask.column = destination.droppableId;
-      updatedTasks.splice(destination.index, 0, movedTask);
+  
+    const startColumn = columns[source.droppableId];
+    const endColumn = columns[destination.droppableId];
+  
+    const startTasks = Array.from(startColumn.tasks);
+    const endTasks = Array.from(endColumn.tasks);
+  
+    const [removed] = startTasks.splice(source.index, 1);
+  
+    const updatedTask = {
+      ...removed,
+      column: endColumn.id === 'backlog' ? 'backlog' : endColumn.id,
+    };
+  
+    // Move the task to the destination position
+    endTasks.splice(destination.index, 0, updatedTask);
+  
+    const newColumns = {
+      ...columns,
+      [startColumn.id]: {
+        ...startColumn,
+        tasks: startTasks,
+      },
+      [endColumn.id]: {
+        ...endColumn,
+        tasks: endTasks,
+      },
+    };
+  
+    if (source.droppableId !== destination.droppableId) {
+      // If the task is moved to a different column, update the column field of the task
+      const updatedStartTasks = newColumns[startColumn.id].tasks.map((task) => {
+        if (task.id === updatedTask.id) {
+          return {
+            ...task,
+            column: endColumn.id === 'backlog' ? 'backlog' : endColumn.id,
+          };
+        }
+        return task;
+      });
+  
+      newColumns[startColumn.id].tasks = updatedStartTasks;
+  
+      if (destination.droppableId === 'backlog') {
+        // When moving a task to the "Backlog" column from a different column,
+        // ensure that the column field of the moved task is updated
+        const updatedBacklogTasks = newColumns['backlog'].tasks.map((task) => {
+          if (task.id === updatedTask.id) {
+            return {
+              ...task,
+              column: 'backlog',
+            };
+          }
+          return task;
+        });
+  
+        newColumns['backlog'].tasks = updatedBacklogTasks;
+      } else if (source.droppableId === 'backlog' && newColumns['backlog'].tasks.length === 0) {
+        // When moving a task from the "Backlog" column to a different column,
+        // remove the task from the "Backlog" column
+        newColumns['backlog'].tasks = newColumns['backlog'].tasks.filter((task) => task.id !== updatedTask.id);
+      }
     }
+  
+    setColumns(newColumns);
 
-    setFilteredTasks(updatedTasks);
   };
-
+  
   const handleSearch = (query: string) => {
     setSearchQuery(query);
   
@@ -159,7 +224,7 @@ function MainPage() {
       }
     }));
   }, [tasks, selectedDate]);
-
+  
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <div className="main-container">
@@ -178,3 +243,8 @@ function MainPage() {
 }
 
 export default MainPage;
+
+function setTasks(updatedTasks: Column | { tasks: Task[]; id: string; title: string; }) {
+  throw new Error('Function not implemented.');
+}
+
