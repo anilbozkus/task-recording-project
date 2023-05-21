@@ -21,7 +21,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
 
   return (
     <div className="header-container">
-      <ModalComponent open={openModal} onClose={() => setOpenModal(false)} />
+      <ModalComponent open={openModal} onClose={() => setOpenModal(false)} onDateChange={handleDateChange}/>
       <div className="left-side">
         <Button label='Report Your Daily Tasks' onClick={() => setOpenModal(true)} />
         <DatePicker

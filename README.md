@@ -1,3 +1,16 @@
+
+# LOGIN INFO!!!
+
+      email: "bill@microsoft.com",
+      password: "bill123",
+
+      email: "elon@tesla.com",
+      password: "elon456",
+      
+      email: "jeff@amazon.com",
+      password: "jeff789",
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

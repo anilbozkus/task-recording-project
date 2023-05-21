@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 interface ModalComponentProps {
   open: boolean;
   onClose: () => void;
+  onDateChange: (date: Date | null) => void; // Add the onDateChange prop
 }
 
 interface Task {
@@ -18,8 +19,8 @@ interface Task {
   column: string;
 }
 
-const ModalComponent: React.FC<ModalComponentProps> = ({ open, onClose }) => {
-  const { selectedDate } = useContext(AppContext);
+const ModalComponent: React.FC<ModalComponentProps> = ({ open, onClose, onDateChange  }) => {
+  const { selectedDate, setSelectedDate } = useContext(AppContext);
   const { tasks, setTasks } = useContext(AppContext);
 
   const [newTask, setNewTask] = useState<Task[]>([
@@ -29,36 +30,53 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ open, onClose }) => {
   ]);
 
   useEffect(() => {
-    const matchingTasks = tasks.filter((task) => {
-      if (task.date && selectedDate) {
-        const taskDateStr = task.date.toISOString().slice(0, -5);
-        const selectedDateStr = selectedDate.toISOString().slice(0, -5);
-        return taskDateStr === selectedDateStr;
-      }
-      return false;
-    });
+    const handleDateChange = (date: Date | null) => {
+      setSelectedDate(date);
+      onDateChange(date);
+      setNewTask((prevTasks) =>
+        prevTasks.map((task) => ({
+          ...task,
+          date: date,
+        }))
+      );
+    };
 
-    if (matchingTasks.length > 0) {
-      setNewTask((prevTasks) => {
-        return prevTasks.map((task, index) => {
-          if (index < matchingTasks.length) {
-            const matchingTask = matchingTasks[index];
-            return {
-              ...task,
-              task_type: matchingTask.task_type,
-              content: matchingTask.content,
-              date: selectedDate,
-            };
-          }
-          return task;
-        });
+    handleDateChange(selectedDate);
+  }, [selectedDate]);
+
+  useEffect(() => {
+    if (selectedDate && tasks.length > 0) {
+      const matchingTasks = tasks.filter((task) => {
+        if (task.date && selectedDate) {
+          const taskDateStr = task.date.toISOString().slice(0, -5);
+          const selectedDateStr = selectedDate.toISOString().slice(0, -5);
+          return taskDateStr === selectedDateStr;
+        }
+        return false;
       });
-    } else {
-      setNewTask([
-        { id: uuidv4(), task_type: '', content: '', date: selectedDate, column: 'backlog' },
-        { id: uuidv4(), task_type: '', content: '', date: selectedDate, column: 'backlog' },
-        { id: uuidv4(), task_type: '', content: '', date: selectedDate, column: 'backlog' },
-      ]);
+  
+      if (matchingTasks.length > 0) {
+        setNewTask((prevTasks) => {
+          return prevTasks.map((task, index) => {
+            if (index < matchingTasks.length) {
+              const matchingTask = matchingTasks[index];
+              return {
+                ...task,
+                task_type: matchingTask.task_type,
+                content: matchingTask.content,
+                date: selectedDate,
+              };
+            }
+            return task;
+          });
+        });
+      } else {
+        setNewTask([
+          { id: uuidv4(), task_type: '', content: '', date: selectedDate, column: 'backlog' },
+          { id: uuidv4(), task_type: '', content: '', date: selectedDate, column: 'backlog' },
+          { id: uuidv4(), task_type: '', content: '', date: selectedDate, column: 'backlog' },
+        ]);
+      }
     }
   }, [selectedDate, tasks]);
 
