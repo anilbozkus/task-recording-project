@@ -1,8 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { Key, useContext, useEffect, useState } from 'react';
 import { Modal, Box, IconButton, Grid, FormControl, InputLabel, Select, MenuItem, TextField, Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import './modal.scss';
 import { AppContext } from '../../appContext';
+import { v4 as uuidv4 } from 'uuid';
 
 interface ModalComponentProps {
   open: boolean;
@@ -10,6 +11,7 @@ interface ModalComponentProps {
 }
 
 interface Task {
+  id: Key | null | undefined;
   task_type: string;
   content: string;
   date: Date | null;
@@ -21,9 +23,9 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ open, onClose }) => {
   const { tasks, setTasks } = useContext(AppContext);
 
   const [newTask, setNewTask] = useState<Task[]>([
-    { task_type: '', content: '', date: selectedDate, column: 'backlog' },
-    { task_type: '', content: '', date: selectedDate, column: 'backlog' },
-    { task_type: '', content: '', date: selectedDate, column: 'backlog' },
+    { id: uuidv4(), task_type: '', content: '', date: selectedDate, column: 'backlog' },
+    { id: uuidv4(), task_type: '', content: '', date: selectedDate, column: 'backlog' },
+    { id: uuidv4(), task_type: '', content: '', date: selectedDate, column: 'backlog' },
   ]);
 
   useEffect(() => {
@@ -53,9 +55,9 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ open, onClose }) => {
       });
     } else {
       setNewTask([
-        { task_type: '', content: '', date: selectedDate, column: 'backlog' },
-        { task_type: '', content: '', date: selectedDate, column: 'backlog' },
-        { task_type: '', content: '', date: selectedDate, column: 'backlog' },
+        { id: uuidv4(), task_type: '', content: '', date: selectedDate, column: 'backlog' },
+        { id: uuidv4(), task_type: '', content: '', date: selectedDate, column: 'backlog' },
+        { id: uuidv4(), task_type: '', content: '', date: selectedDate, column: 'backlog' },
       ]);
     }
   }, [selectedDate, tasks]);

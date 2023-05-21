@@ -1,6 +1,7 @@
-import React, { createContext, useState } from 'react';
+import React, { Key, createContext, useState } from 'react';
 
 interface Task {
+    id: Key | null | undefined;
     task_type: string;
     content: string;
     date: Date | null;
