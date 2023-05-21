@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.scss';
-import MainPage from './pages/MainPage/mainPage';
 import { AppProvider } from './appContext';
+import MainPage from './pages/MainPage/MainPage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
